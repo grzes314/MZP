@@ -1,0 +1,18 @@
+# Java #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# backup files #
+*~
+
+# not source directories #
+build.xml
+applet.policy
+nbproject/
+build/
+dist/
+
