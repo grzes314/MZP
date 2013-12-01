@@ -35,7 +35,7 @@ public class TrapezoidalRule implements Method
         {
             prevX = x;
             prevY = y;
-            x = (x - h*y - h2*x/2) / (1 + h2/4);
+            x = (x - h*y - h2*x/4) / (1 + h2/4);
             y = h*(prevX + x)/2 + y;
             points.addPoint(x, y);
         }

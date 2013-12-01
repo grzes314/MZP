@@ -75,14 +75,24 @@ public class CircleApp extends JFrame
     
     private void draw()
     {
-        Parameters params = mainPanel.getParams();
-        Method method = mainPanel.getMethod();
-        Points points = method.run(params);
-        PlotProxy.plot(points.getXs(), points.getYs());
-        PlotProxy.addPoints(getCircle());
-        PlotProxy.resetLimits();
-        revalidate();
-        repaint();
+        final Parameters params = mainPanel.getParams();
+        final Method method = mainPanel.getMethod();
+        new SwingWorker<Void, Void>() {
+
+            @Override
+            protected Void doInBackground() throws Exception
+            {
+                mainPanel.block(true);
+                Points points = method.run(params);
+                PlotProxy.plot(points.getXs(), points.getYs());
+                PlotProxy.addPoints(getCircle());
+                PlotProxy.resetLimits();
+                //revalidate();
+                //repaint();
+                mainPanel.block(false);
+                return null;
+            }
+        }.execute();
     }
     
     private PlotObject getCircle()
@@ -95,6 +105,7 @@ public class CircleApp extends JFrame
         }
         return po;
     }
+    
     
     MainPanel mainPanel;
 }

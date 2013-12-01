@@ -31,7 +31,7 @@ public class PlotPanel extends JPanel
     }
 
     @Override
-    public void paint(Graphics gr)
+    public synchronized void paint(Graphics gr)
     {
         super.paint(gr);
         if (!pobjects.isEmpty())
@@ -74,7 +74,7 @@ public class PlotPanel extends JPanel
         }
     }
 
-    public void addPlotObject(PlotObject po)
+    public synchronized void addPlotObject(PlotObject po)
     {
         pobjects.add(po);
         addToLegend(po.getLabel(), po.getColor());
@@ -128,7 +128,7 @@ public class PlotPanel extends JPanel
         return legend;
     }
 
-    public void clear()
+    public synchronized void clear()
     {
         pobjects.clear();
         repaint();
