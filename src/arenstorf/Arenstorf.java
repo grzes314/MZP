@@ -1,6 +1,8 @@
 
 package arenstorf;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import math.matrices.Vector;
 import numerics.DormandPrince;
 import numerics.ODE;
@@ -19,7 +21,6 @@ public class Arenstorf
         this.mu1 = mu1;
         mu2 = 1 - mu1;
         rk = new DormandPrince().getMethod();
-        makeODE();
     }
     
     public Arenstorf()
@@ -32,24 +33,61 @@ public class Arenstorf
             );
     }
     
-    public void calculate()
+    public void calculate(SimData sd)
     {
-        rk.solve(ode, 1e-7);
+        makeODE(sd.time);
+        rk.solve(ode, sd.tolerance);
     }
     
-    public PlotObject getPlotData()
+    public PlotObject[] getPlotData()
     {
-        PlotObject po = new PlotObject();
-        for (int i = 0; i < rk.getSteps(); ++i)
+        ArrayList<PlotObject> pos = new ArrayList<>();
+        int ind = 0;
+        for (int rot = 0; ; ++rot)
         {
-            po.addPoint(rk.getYAt(i).get(1), rk.getYAt(i).get(2));
+            PlotObject po = initPlotObjectForNextRotation(rot);
+            ind = insertPointsFromOneRotation(ind, (rot+1)*17.07, po); 
+            if (po.getSize() == 0) break;
+            else pos.add(po);
         }
-        return po;
+        return plotObjectsToArray(pos);
+    }
+    
+    private PlotObject[] plotObjectsToArray(ArrayList<PlotObject> pos)
+    {
+        PlotObject[] arr = new PlotObject[pos.size()];
+        for (int i = 0; i < pos.size(); ++i)
+            arr[i] = pos.get(i);
+        return arr;
+    }
+    
+    private int insertPointsFromOneRotation(int ind, double time, PlotObject po)
+    {
+        for (int i = ind; i < rk.getSteps(); ++i)
+        {
+            double t = rk.getXAt(i);
+            double x = rk.getYAt(i).get(1);
+            double y = rk.getYAt(i).get(2);
+            if (t > time)
+                return i;
+            po.addPoint(x, y);
+        }
+        return rk.getSteps();
+    }
+    
+    private PlotObject initPlotObjectForNextRotation(int rot)
+    {
+        if (rot == 0) return new PlotObject("First rotation", Color.BLACK, PlotObject.Type.Points);
+        if (rot == 1) return new PlotObject("Second rotation", Color.BLUE, PlotObject.Type.Points);
+        if (rot == 2) return new PlotObject("Third rotation", Color.GREEN, PlotObject.Type.Points);
+        if (rot == 3) return new PlotObject("Fourth rotation", Color.RED, PlotObject.Type.Points);
+        if (rot == 4) return new PlotObject("Fifth rotation", Color.ORANGE, PlotObject.Type.Points);
+        else return new PlotObject("Next rotation", Color.GRAY, PlotObject.Type.Points);
     }
 
-    private void makeODE()
+    private void makeODE(double time)
     {
-        ode = new ODE(0, 18, y0) {
+        ode = new ODE(0, time, y0) {
             @Override public Vector f(double x, Vector y) {
                 return Arenstorf.this.f(x, y);
             }
@@ -77,4 +115,6 @@ public class Arenstorf
     private double mu1, mu2;
     private RungeKutta rk;
     private ODE ode;
+    private double tol;
+    private double time;
 }

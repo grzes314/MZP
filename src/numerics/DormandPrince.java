@@ -16,7 +16,7 @@ public class DormandPrince
         Vector b4 = makeB4();
         Vector b5 = makeB5();
         Vector c = makeC();
-        return new RungeKutta(A, b4, b5, c, false);
+        return new RungeKutta(A, b4, b5, c, true);
     }
 
     private Matrix makeA()

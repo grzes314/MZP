@@ -71,7 +71,7 @@ public class RungeKutta
         xs.add(x);
         next = 1;
         //h = (ode.xn - ode.x0) / 1000;
-        h = 1.0/4096;
+        h = 1.0/64;
     }
     
     private void checkArgs(Matrix A, Vector b4, Vector b5, Vector c)
@@ -124,11 +124,23 @@ public class RungeKutta
 
     private void updateH()
     {
-        Vector y4 = calcNewY4();
-        Vector y5 = calcNewY5();
-        double norm = y4.add(y5.times(-1)).norm();
-        double alfa = 0.8 * Math.pow(tol/norm, 0.2);
-        h *= alfa;
+        for (int i = 0; i < 10; ++i)
+        {
+            Vector y4 = calcNewY4();
+            Vector y5 = calcNewY5();
+            double norm = y4.add(y5.times(-1)).norm();
+            if (norm < tol && norm > tol/4) //step is reasonable
+                return;                     //no need to update h
+            double alfa = 0.8 * Math.pow(tol/norm, 0.2);
+            h *= alfa;
+            if (h < hmin)
+            {
+                h = hmin;
+                updateKs();
+                return;
+            }
+            updateKs();
+        }
     }
     
     private Matrix A;
@@ -145,5 +157,6 @@ public class RungeKutta
     private int s;
     private Vector[] k;
     private double h;
+    private double hmin = 1.0/8192;
     private final boolean controlStep;
 }

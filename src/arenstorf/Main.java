@@ -3,11 +3,9 @@ package arenstorf;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import plot.PlotProxy;
 
@@ -46,28 +44,27 @@ public class Main extends JFrame
 
     private Component makeSouth()
     {
-        JPanel panel = new JPanel();
-        draw = new JButton("Draw");
-        draw.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
+        controlPanel = new ControlPanel();
+        controlPanel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override public void propertyChange(PropertyChangeEvent evt) {
                 drawClicked();
             }
         });
-        panel.add(draw);
-        return panel;
+        return controlPanel;
     }
     
     private void calculate()
     {
         Arenstorf a = new Arenstorf();
-        a.calculate();
+        a.calculate(controlPanel.getSimData());
         PlotProxy.plot(a.getPlotData());
-        draw.setEnabled(true);
+        PlotProxy.resetLimits();
+        controlPanel.drawEnabled(true);
     }
     
     private void drawClicked()
     {
-        draw.setEnabled(false);
+        controlPanel.drawEnabled(false);
         new Thread( new Runnable() {
             @Override public void run() {
                 calculate();
@@ -75,5 +72,5 @@ public class Main extends JFrame
         }).start();
     }
     
-    private JButton draw;
+    private ControlPanel controlPanel;
 }
