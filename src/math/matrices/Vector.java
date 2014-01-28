@@ -108,4 +108,20 @@ public class Vector extends Matrix implements Iterable<Double>
             throw new IllegalArgumentException("First row can not be greater than "
                     + "last row, firstRow = " + firstRow + ", lastRow = " + lastRow);
     }
+    
+    public double normSq()
+    {
+        double res = 0;
+        for (int row = 1; row <= getSize(); ++row)
+        {
+            double x = get(row);
+            res += x*x;
+        }
+        return res;
+    }
+    
+    public double norm()
+    {
+        return Math.sqrt(normSq());
+    }
 }
