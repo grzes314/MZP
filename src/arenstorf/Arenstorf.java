@@ -46,7 +46,7 @@ public class Arenstorf
         for (int rot = 0; ; ++rot)
         {
             PlotObject po = initPlotObjectForNextRotation(rot);
-            ind = insertPointsFromOneRotation(ind, (rot+1)*17.07, po); 
+            ind = insertPointsFromOneRotation(ind, (rot+1)*period, po); 
             if (po.getSize() == 0) break;
             else pos.add(po);
         }
@@ -85,9 +85,17 @@ public class Arenstorf
         else return new PlotObject("Next rotation", Color.GRAY, PlotObject.Type.Points);
     }
 
+    public PlotObject getPOForStep()
+    {
+        PlotObject po = new PlotObject("step size", Color.BLUE, PlotObject.Type.Lines);
+        for (int i = 0; i < rk.getSteps(); ++i)
+            po.addPoint(rk.getXAt(i), rk.getHAt(i));
+        return po;
+    }
+
     private void makeODE(double time)
     {
-        ode = new ODE(0, time, y0) {
+        ode = new ODE(0, time, y0, period) {
             @Override public Vector f(double x, Vector y) {
                 return Arenstorf.this.f(x, y);
             }
@@ -111,10 +119,14 @@ public class Arenstorf
         return new Vector( new double[] {dy1, dy2, dy3, dy4} );
     }
     
+    public ArrayList<PeriodEndInfo> getResultInfo()
+    {
+        return rk.getPeriodEndInfos();
+    }
+    
     private final Vector y0;
     private double mu1, mu2;
     private RungeKutta rk;
     private ODE ode;
-    private double tol;
-    private double time;
+    private final double period = 17.06521656015;
 }

@@ -68,7 +68,8 @@ public class ControlPanel extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -84,11 +85,13 @@ public class ControlPanel extends javax.swing.JPanel
 
         jLabel3.setText("tolerance: ");
 
-        time.setModel(new javax.swing.SpinnerNumberModel(18.0d, 1.0d, 100.0d, 0.5d));
+        time.setModel(new javax.swing.SpinnerNumberModel(18.0d, 1.0d, 103.0d, 5.0d));
 
         mLogTol.setModel(new javax.swing.SpinnerNumberModel(20, 10, 40, 1));
-        mLogTol.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+        mLogTol.addChangeListener(new javax.swing.event.ChangeListener()
+        {
+            public void stateChanged(javax.swing.event.ChangeEvent evt)
+            {
                 mLogTolStateChanged(evt);
             }
         });
@@ -96,8 +99,10 @@ public class ControlPanel extends javax.swing.JPanel
         tolerance.setText("jLabel4");
 
         draw.setText("Draw");
-        draw.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        draw.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 drawActionPerformed(evt);
             }
         });
@@ -117,7 +122,7 @@ public class ControlPanel extends javax.swing.JPanel
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(tolerance, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(time, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)

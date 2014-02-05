@@ -86,6 +86,17 @@ public class PlotPanel extends JPanel
         repaint();
     }
 
+    public void addPlotObjects(PlotObject[] plotData)
+    {
+        for (int i = 0; i < plotData.length; ++i)
+            addPlotObject(plotData[i]);
+        if (pobjects.size() == plotData.length)
+        {
+            resetLimits();
+            resetSpinners();
+        }
+    }
+    
     public void resetLimits()
     {
         minX = minX();
@@ -459,4 +470,5 @@ public class PlotPanel extends JPanel
     private ArrayList<PlotObject> pobjects;
     private JPanel legend, controls;
     private boolean showGrid;
+
 }
