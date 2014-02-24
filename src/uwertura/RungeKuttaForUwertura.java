@@ -1,6 +1,7 @@
 
-package numerics;
+package uwertura;
 
+import numerics.*;
 import arenstorf.PeriodEndInfo;
 import java.util.ArrayList;
 import math.matrices.Matrix;
@@ -10,9 +11,9 @@ import math.matrices.Vector;
  *
  * @author Grzegorz Los
  */
-public class RungeKutta
+public class RungeKuttaForUwertura
 {
-    public RungeKutta(Matrix A, Vector b4, Vector b5, Vector c, boolean controlStep)
+    public RungeKuttaForUwertura(Matrix A, Vector b4, Vector b5, Vector c, boolean controlStep)
     {
         checkArgs(A, b4, b5, c);
         this.A = A;
@@ -64,6 +65,8 @@ public class RungeKutta
             updateCoefs();
             x = x + h;
             y = calcNewY5();
+            if (y.get(1) < -10)
+                break;
             maybePeriodEndCorrection();
             xs.add(x);
             ys.add(y);
@@ -171,7 +174,7 @@ public class RungeKutta
             Vector y5 = calcNewY5();
             double alfa = min(getAlfas(y4, y5));
             h *= 0.8 * alfa;
-            //if (h > 1.0/16) h = 1.0/16;
+            if (h > 1.0/32) h = 1.0/32;
             updateKs();
         }
     }
@@ -220,7 +223,7 @@ public class RungeKutta
             y = calcNewY5();
             addPeriodEndInfo();
             periodNr++;
-            h = 1.0 / 32768;
+            h = 1.0 / 256;
             updateKs();
         }
     }
