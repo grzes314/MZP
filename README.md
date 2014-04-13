@@ -1,3 +1,3 @@
 MZP
 ===
-W tym repozytorium umieszczam kody źródłowe programów pisanych w ramach przedmiotu Modelowanie Zjawisk Przyrodniczych.
+In this repository I store source code of programs written during course of "Modelling of Natural Problems" (polish: "Modelowanie Zjawisk Przyrodniczych").
